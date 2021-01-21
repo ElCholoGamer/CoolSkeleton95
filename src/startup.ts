@@ -1,7 +1,7 @@
-import { Client, ClientEvents } from 'discord.js';
+import { Client } from 'discord.js';
 import { join } from 'path';
-import EventHandler, { BaseHandler } from './structures/event-handler';
-import { readFullDir, removeExtension } from './utils';
+import { BaseHandler } from './structures/event-handler';
+import { readFullDir } from './utils';
 
 async function startup(client: Client) {
 	// Events
