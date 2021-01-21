@@ -6,7 +6,7 @@ export abstract class BaseHandler<E extends keyof ClientEvents> {
 		public readonly client: Client
 	) {}
 
-	abstract execute(...args: ClientEvents[E]): void;
+	public abstract execute(...args: ClientEvents[E]): void;
 }
 
 function EventHandler<E extends keyof ClientEvents>(eventName: E) {
