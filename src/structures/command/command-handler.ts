@@ -94,9 +94,13 @@ class CommandHandler {
 		}
 
 		const event = new CommandEvent(message, args);
-		await command.execute(event).catch(console.error);
-
-		return true;
+		try {
+			await command.execute(event);
+			return true;
+		} catch (err) {
+			console.error(err);
+			return false;
+		}
 	}
 }
 
