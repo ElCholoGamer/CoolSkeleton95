@@ -58,19 +58,19 @@ export default class Help extends Command {
 			} = command;
 
 			embed
-				.setTitle(`COMMAND: \`${name}\``)
+				.setTitle(`\`${name}\` COMMAND`)
 				.setDescription(description)
-				.addField('USAGE', `\`${[prefix + name, ...usage].join(' ')}\``);
+				.addField('USAGE:', `\`${[prefix + name, ...usage].join(' ')}\``);
 
 			if (aliases?.length) {
 				embed.addField(
-					'ALIASES',
+					'ALIASES:',
 					aliases.map(alias => `\`${alias}\``).join(', ')
 				);
 			}
 
 			if (permissions?.length) {
-				embed.addField('PERMISSIONS', formatPermissions(permissions));
+				embed.addField('PERMISSIONS:', formatPermissions(permissions));
 			}
 		}
 
