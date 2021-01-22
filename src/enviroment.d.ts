@@ -6,6 +6,10 @@ declare global {
 			NODE_ENV: 'development' | 'production';
 		}
 	}
+
+	interface Math {
+		clamp(num: number, min: number, max: number): number;
+	}
 }
 
 declare module 'discord.js' {
