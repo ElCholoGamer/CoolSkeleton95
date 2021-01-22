@@ -1,5 +1,6 @@
 import { Client } from 'discord.js';
 import startup from './startup';
+import './extensions/math';
 
 const NODE_ENV = (process.env.NODE_ENV = process.argv.includes('-d')
 	? 'development'
@@ -10,7 +11,7 @@ console.log(`Running in ${NODE_ENV} mode`);
 (async () => {
 	if (NODE_ENV === 'development') (await import('dotenv')).config();
 
-	const client = new Client();
+	const client = new Client({ restTimeOffset: 200 });
 	await startup(client);
 
 	console.log('Logging in...');
