@@ -1,9 +1,10 @@
-import { DMChannel } from 'discord.js';
-import { Message } from 'discord.js';
-import { Client, Collection } from 'discord.js';
+import { DMChannel, Client, Collection, Message } from 'discord.js';
 import { join } from 'path';
-import { readFullDir } from '../../utils';
+import { formatPermissions, readFullDir } from '../../utils';
 import Command from './command';
+import { prefix, owner } from '../../config.json';
+import Category from '../category';
+import CommandEvent from './command-event';
 
 class CommandHandler {
 	public readonly commands: Collection<string, Command>;
@@ -19,6 +20,7 @@ class CommandHandler {
 			/\.(ts|js)$/i.test(file)
 		);
 
+		// Import and register all commands
 		await Promise.all(
 			files.map(async file => {
 				const { default: Command } = await import(file);
@@ -29,7 +31,6 @@ class CommandHandler {
 			})
 		);
 
-		console.log('Commands:', this.commands);
 		return this.commands;
 	}
 
@@ -43,7 +44,60 @@ class CommandHandler {
 		);
 	}
 
-	public async handle(message: Message) {}
+	public async handle(message: Message): Promise<boolean> {
+		const { author, guild, member, channel, content } = message;
+
+		// Initial checks
+		if (
+			author.bot ||
+			!guild?.me ||
+			!member ||
+			channel instanceof DMChannel ||
+			!content.startsWith(prefix)
+		)
+			return false;
+
+		const [commandName, ...args] = content
+			.slice(prefix.length)
+			.trim()
+			.split(/\s+/);
+
+		// Find command
+		const command = this.client.commandHandler.findCommand(commandName);
+		if (!command) return false;
+
+		const {
+			category,
+			options: { permissions = [], selfPermissions = [] },
+		} = command;
+
+		if (category === Category.OWNER && author.id !== owner) return false;
+
+		// Check that author has permissions
+		if (!member.permissions.has(permissions)) {
+			channel.send(
+				`YOU NEED SOME PERMISSIONS FOR THIS COMMAND: ${formatPermissions(
+					permissions
+				)}`
+			);
+			return false;
+		}
+
+		// Check that bot has permissions
+		if (!channel.permissionsFor(guild.me)?.has(selfPermissions)) {
+			channel.send(
+				`I NEED SOME PERMISSIONS FOR THIS COMMAND: ${formatPermissions(
+					selfPermissions
+				)}`
+			);
+			return false;
+		}
+
+		const event = new CommandEvent(message, args);
+		await command.execute(event).catch(console.error);
+
+		return true;
+	}
 }
 
 export default CommandHandler;
