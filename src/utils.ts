@@ -22,5 +22,7 @@ export async function readFullDir(dir: string): Promise<string[]> {
 	return result;
 }
 
+export const formatList = (list: any[]) => list.map(e => `\`${e}\``).join(', ');
+
 export const formatPermissions = (list: any[]) =>
 	list.map(perm => `\`${perm.toString().replace(/-/g, ' ')}\``);

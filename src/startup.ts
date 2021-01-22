@@ -1,8 +1,9 @@
+import { registerFont } from 'canvas';
 import { Client } from 'discord.js';
-import { join } from 'path';
+import { basename, join } from 'path';
 import CommandHandler from './structures/command/command-handler';
 import { BaseHandler } from './structures/event-handler';
-import { readFullDir } from './utils';
+import { readFullDir, removeExtension } from './utils';
 
 async function startup(client: Client) {
 	// Events
@@ -23,6 +24,13 @@ async function startup(client: Client) {
 	// Commands
 	client.commandHandler = new CommandHandler(client);
 	client.commandHandler.init();
+
+	// Fonts
+	const fontFiles = await readFullDir('./assets/font');
+	for (const file of fontFiles) {
+		const family = removeExtension(basename(file));
+		registerFont(file, { family });
+	}
 }
 
 export default startup;

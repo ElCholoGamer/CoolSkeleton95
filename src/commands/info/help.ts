@@ -1,14 +1,19 @@
 import { MessageEmbed, EmbedField } from 'discord.js';
-import Category from '../structures/category';
-import Command from '../structures/command/command';
-import CommandEvent from '../structures/command/command-event';
-import CommandHandler from '../structures/command/command-handler';
-import { prefix, embedColor } from '../config.json';
-import { formatPermissions } from '../utils';
+import Category from '../../structures/category';
+import Command from '../../structures/command/command';
+import CommandEvent from '../../structures/command/command-event';
+import CommandHandler from '../../structures/command/command-handler';
+import { prefix, embedColor } from '../../config.json';
+import { formatPermissions } from '../../utils';
 
 export default class Help extends Command {
 	public constructor(handler: CommandHandler) {
-		super('help', 'Shows help', Category.INFO, handler);
+		super(
+			'help',
+			'SHOWS THE LIST OF MY AWESOME COMMANDS.',
+			Category.INFO,
+			handler
+		);
 	}
 
 	public async execute({ channel, client, args: [search] }: CommandEvent) {

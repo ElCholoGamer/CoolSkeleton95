@@ -5,6 +5,7 @@ interface CommandOptions {
 	usage?: string[];
 	permissions?: PermissionResolvable[];
 	selfPermissions?: PermissionResolvable[];
+	exampleArgs?: string[];
 }
 
 export default CommandOptions;
