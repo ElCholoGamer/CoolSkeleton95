@@ -7,7 +7,7 @@
 	"private": true,
 	"scripts": {
 		"start": "node .",
-		"dev": "ts-node-dev --cls --respawn src/index.ts -d",
+		"dev": "ts-node-dev --rs --respawn src/index.ts -d",
 		"build": "tsc"
 	},
 	"repository": {
