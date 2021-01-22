@@ -21,7 +21,7 @@ class Dialog extends Command {
 			handler,
 			{
 				selfPermissions: ['ATTACH_FILES'],
-				usage: ['[character](_mode)', '[text]'],
+				usage: '[character](_mode) [text]',
 				exampleArgs: [
 					"papyrus LOOK SANS, I'M ON DISCORD!!!",
 					'sans_wink hey bud, want a hot dog?',

@@ -13,7 +13,7 @@ export default class Help extends Command {
 			'SHOWS THE LIST OF MY AWESOME COMMANDS.',
 			Category.INFO,
 			handler,
-			{ usage: ['(command)'] }
+			{ usage: '(command)' }
 		);
 	}
 
@@ -60,13 +60,13 @@ export default class Help extends Command {
 			const {
 				name,
 				description,
-				options: { aliases, permissions, usage = [], exampleArgs },
+				options: { aliases, permissions, usage = '', exampleArgs },
 			} = command;
 
 			embed
 				.setTitle(`${name.toUpperCase()} COMMAND`)
 				.setDescription(description)
-				.addField('USAGE:', `\`${[prefix + name, ...usage].join(' ')}\``);
+				.addField('USAGE:', `\`${(prefix + name + ' ' + usage).trim()}\``);
 
 			if (aliases?.length) {
 				embed.addField(
