@@ -1,5 +1,6 @@
 import { Client } from 'discord.js';
 import { join } from 'path';
+import CommandHandler from './structures/command/command-handler';
 import { BaseHandler } from './structures/event-handler';
 import { readFullDir } from './utils';
 
@@ -18,6 +19,10 @@ async function startup(client: Client) {
 			client.on(handler.eventName, handler.execute.bind(handler));
 		})
 	);
+
+	// Commands
+	client.commandHandler = new CommandHandler(client);
+	client.commandHandler.init();
 }
 
 export default startup;
