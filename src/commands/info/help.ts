@@ -12,7 +12,8 @@ export default class Help extends Command {
 			'help',
 			'SHOWS THE LIST OF MY AWESOME COMMANDS.',
 			Category.INFO,
-			handler
+			handler,
+			{ usage: ['(command)'] }
 		);
 	}
 
@@ -59,11 +60,11 @@ export default class Help extends Command {
 			const {
 				name,
 				description,
-				options: { aliases, permissions, usage = [] },
+				options: { aliases, permissions, usage = [], exampleArgs },
 			} = command;
 
 			embed
-				.setTitle(`\`${name}\` COMMAND`)
+				.setTitle(`${name.toUpperCase()} COMMAND`)
 				.setDescription(description)
 				.addField('USAGE:', `\`${[prefix + name, ...usage].join(' ')}\``);
 
@@ -76,6 +77,13 @@ export default class Help extends Command {
 
 			if (permissions?.length) {
 				embed.addField('PERMISSIONS:', formatPermissions(permissions));
+			}
+
+			if (exampleArgs?.length) {
+				embed.addField(
+					'EXAMPLES:',
+					exampleArgs.map(args => `\`${prefix}${name} ${args}\``).join('\n')
+				);
 			}
 		}
 
