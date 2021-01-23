@@ -1,4 +1,4 @@
-import { MessageEmbed, MessageReaction } from 'discord.js';
+import { MessageEmbed, MessageReaction, User } from 'discord.js';
 import { basename } from 'path';
 import Category from '../../structures/category';
 import Command from '../../structures/command/command';
@@ -7,7 +7,6 @@ import CommandHandler from '../../structures/command/command-handler';
 import { readFullDir, removeExtension } from '../../util/utils';
 import { embedColor } from '../../config.json';
 import { NUMBERS, NUMBER_EMOJIS } from '../../util/constants';
-import { User } from 'discord.js';
 
 interface Sound {
 	name: string;
