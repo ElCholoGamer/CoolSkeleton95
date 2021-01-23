@@ -1,8 +1,8 @@
 import { registerFont } from 'canvas';
 import { Client } from 'discord.js';
 import { basename, join } from 'path';
-import CommandHandler from './structures/command/command-handler';
-import { BaseHandler } from './structures/event-handler';
+import CommandHandler from '../structures/command/command-handler';
+import { BaseHandler } from '../structures/event-handler';
 import { readFullDir, removeExtension } from './utils';
 
 async function startup(client: Client) {

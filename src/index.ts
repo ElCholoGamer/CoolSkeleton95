@@ -1,5 +1,5 @@
 import { Client } from 'discord.js';
-import startup from './startup';
+import startup from './util/startup';
 import './extensions/math';
 
 const NODE_ENV = (process.env.NODE_ENV = process.argv.includes('-d')

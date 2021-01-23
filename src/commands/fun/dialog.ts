@@ -6,7 +6,7 @@ import Category from '../../structures/category';
 import Command from '../../structures/command/command';
 import CommandEvent from '../../structures/command/command-event';
 import CommandHandler from '../../structures/command/command-handler';
-import { formatList, removeExtension } from '../../utils';
+import { formatList, removeExtension } from '../../util/utils';
 import { embedColor } from '../../config.json';
 
 class Dialog extends Command {

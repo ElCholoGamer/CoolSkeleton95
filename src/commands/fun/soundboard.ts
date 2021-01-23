@@ -4,9 +4,9 @@ import Category from '../../structures/category';
 import Command from '../../structures/command/command';
 import CommandEvent from '../../structures/command/command-event';
 import CommandHandler from '../../structures/command/command-handler';
-import { readFullDir, removeExtension } from '../../utils';
+import { readFullDir, removeExtension } from '../../util/utils';
 import { embedColor } from '../../config.json';
-import { NUMBERS, NUMBER_EMOJIS } from '../../constants';
+import { NUMBERS, NUMBER_EMOJIS } from '../../util/constants';
 import { User } from 'discord.js';
 
 interface Sound {

@@ -4,7 +4,7 @@ import Command from '../../structures/command/command';
 import CommandEvent from '../../structures/command/command-event';
 import CommandHandler from '../../structures/command/command-handler';
 import { prefix, embedColor } from '../../config.json';
-import { formatPermissions } from '../../utils';
+import { formatPermissions } from '../../util/utils';
 
 export default class Help extends Command {
 	public constructor(handler: CommandHandler) {
