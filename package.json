@@ -24,7 +24,8 @@
 		"@discordjs/opus": "^0.3.3",
 		"canvas": "^2.6.1",
 		"discord.js": "^12.5.1",
-		"ffmpeg-static": "^4.2.7"
+		"ffmpeg-static": "^4.2.7",
+		"mongoose": "^5.11.13"
 	},
 	"devDependencies": {
 		"@types/node": "^14.14.22",
