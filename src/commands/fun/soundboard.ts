@@ -130,11 +130,8 @@ class Soundboard extends Command {
 
 			if (arrowsIndex !== -1) {
 				// Change page index
-				currentPage = Math.clamp(
-					currentPage + (arrowsIndex || -1),
-					0,
-					this.pages.length - 1
-				);
+				currentPage += arrowsIndex || -1;
+				if (currentPage < 0 || currentPage >= this.pages.length) return;
 
 				const newEmbed = this.getSoundsEmbed(currentPage);
 				await message.edit(newEmbed);
