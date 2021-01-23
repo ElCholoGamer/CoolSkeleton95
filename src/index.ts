@@ -1,6 +1,7 @@
 import { Client } from 'discord.js';
 import startup from './util/startup';
 import './extensions/math';
+import db from './util/db';
 
 const NODE_ENV = (process.env.NODE_ENV = process.argv.includes('-d')
 	? 'development'
@@ -10,6 +11,9 @@ console.log(`Running in ${NODE_ENV} mode`);
 
 (async () => {
 	if (NODE_ENV === 'development') (await import('dotenv')).config();
+
+	console.log('Connecting to database...');
+	await db();
 
 	const client = new Client({ restTimeOffset: 200 });
 	await startup(client);
