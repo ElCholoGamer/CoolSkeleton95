@@ -8,7 +8,7 @@ import { readFullDir, removeExtension } from './utils';
 async function startup(client: Client) {
 	// Events
 	const eventFiles = (
-		await readFullDir(join(__dirname, 'events'))
+		await readFullDir(join(__dirname, '../events'))
 	).filter(file => /\.(ts|js)$/i.test(file));
 
 	await Promise.all(
