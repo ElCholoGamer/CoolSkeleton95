@@ -20,5 +20,6 @@ declare module 'discord.js' {
 
 	interface User {
 		getDocument(): Promise<IUser>;
+		addGold(amount: number): Promise<void>;
 	}
 }
