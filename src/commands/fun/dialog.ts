@@ -131,13 +131,19 @@ class Dialog extends Command {
 		const fontSize = 32;
 
 		// Select font family
-		ctx.font = `${fontSize}px ${
-			name === 'sans'
-				? 'Comic Sans UT'
-				: name === 'papyrus'
-				? 'Papyrus UT'
-				: 'Determination Mono'
-		}`;
+		let fontName: string;
+		switch (name) {
+			case 'sans':
+				fontName = 'Comic Sans UT';
+				break;
+			case 'papyrus':
+				fontName = 'Papyrus UT';
+				break;
+			default:
+				fontName = 'Determination Mono';
+		}
+
+		ctx.font = `${fontSize}px ${fontName}`;
 
 		const lines = rest.reduce<string[]>(
 			(acc, word) => {
