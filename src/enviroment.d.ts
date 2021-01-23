@@ -1,3 +1,4 @@
+import { IUser } from './models/user';
 import CommandHandler from './structures/command/command-handler';
 
 declare global {
@@ -15,5 +16,9 @@ declare global {
 declare module 'discord.js' {
 	interface Client {
 		commandHandler: CommandHandler;
+	}
+
+	interface User {
+		getDocument(): Promise<IUser>;
 	}
 }
