@@ -1,0 +1,24 @@
+{
+	"root": true,
+	"parser": "@typescript-eslint/parser",
+	"plugins": ["@typescript-eslint"],
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended"
+	],
+	"rules": {
+		"@typescript-eslint/explicit-module-boundary-types": "off",
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/no-non-null-assertion": "off",
+		"@typescript-eslint/no-unused-vars": "error",
+		"indent": ["error", "tab", { "SwitchCase": 1 }],
+		"linebreak-style": ["error", "windows"],
+		"eol-last": ["error", "always"],
+		"semi": "off",
+		"arrow-parens": ["error", "as-needed"],
+		"no-useless-concat": "error",
+		"quotes": ["error", "single", { "avoidEscape": true }],
+		"no-cond-assign": "off"
+	}
+}
