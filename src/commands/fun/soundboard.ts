@@ -15,8 +15,8 @@ interface Sound {
 }
 
 class Soundboard extends Command {
-	private readonly pages: Sound[][];
-	private readonly PAGE_LIMIT: number;
+	private readonly pages: Sound[][] = [];
+	private readonly PAGE_LIMIT = 5;
 
 	public constructor(handler: CommandHandler) {
 		super(
@@ -27,8 +27,6 @@ class Soundboard extends Command {
 			{ selfPermissions: ['CONNECT', 'SPEAK', 'DEAFEN_MEMBERS'] }
 		);
 
-		this.PAGE_LIMIT = 5;
-		this.pages = [];
 		this.loadSounds();
 	}
 

@@ -7,10 +7,9 @@ import Category from '../category';
 import CommandEvent from './command-event';
 
 class CommandHandler {
-	public readonly commands: Collection<string, Command>;
+	public readonly commands = new Collection<string, Command>();
 
 	public constructor(public readonly client: Client) {
-		this.commands = new Collection();
 		client.on('message', m => this.handle(m));
 	}
 

@@ -10,8 +10,8 @@ import { formatList, removeExtension } from '../../utils';
 import { embedColor } from '../../config.json';
 
 class Dialog extends Command {
-	private bg: Image | null;
-	private characters: Record<string, Record<string, Image>>;
+	private bg: Image | null = null;
+	private readonly characters: Record<string, Record<string, Image>> = {};
 
 	public constructor(handler: CommandHandler) {
 		super(
@@ -28,9 +28,6 @@ class Dialog extends Command {
 				],
 			}
 		);
-
-		this.bg = null;
-		this.characters = {};
 
 		this.loadImages();
 	}
