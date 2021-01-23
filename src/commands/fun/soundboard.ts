@@ -101,15 +101,14 @@ class Soundboard extends Command {
 
 		const collector = message.createReactionCollector(
 			(reaction: MessageReaction, user: User) =>
-				fullEmojis.includes(reaction.emoji.name) && user.id !== self.id
+				fullEmojis.includes(reaction.emoji.name) &&
+				user.id !== self.id &&
+				guild.member(user)?.voice.channel?.id === vc?.id
 		);
 
 		collector.on('collect', async (reaction, user) => {
 			const { connection } = self.voice;
 			if (!connection) return;
-
-			const member = guild.member(user);
-			if (member?.voice.channel?.id !== connection.channel.id) return;
 
 			// Remove reaction
 			const emoji = reaction.emoji.name;
