@@ -29,9 +29,10 @@ abstract class Monster {
 		ctx: BattleContext
 	): Awaitable<Record<string, () => void>>;
 
-	public onAttack(dmg: number, ctx: BattleContext) {}
-	public onDeath(ctx: BattleContext) {}
-	public onSpare(ctx: BattleContext) {}
+	public onSpawn(ctx: BattleContext): Awaitable<void> {}
+	public onAttack(dmg: number, ctx: BattleContext): Awaitable<void> {}
+	public onDeath(ctx: BattleContext): Awaitable<void> {}
+	public onSpare(ctx: BattleContext): Awaitable<void> {}
 }
 
 export class ExampleMonster extends Monster {
