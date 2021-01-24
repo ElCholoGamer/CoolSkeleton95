@@ -52,7 +52,7 @@ class CommandHandler {
 			!guild?.me ||
 			!member ||
 			channel instanceof DMChannel ||
-			!content.startsWith(prefix)
+			!content.toLowerCase().startsWith(prefix.toLowerCase())
 		)
 			return false;
 
