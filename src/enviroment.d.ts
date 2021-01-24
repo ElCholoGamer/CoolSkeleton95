@@ -12,6 +12,10 @@ declare global {
 	interface Math {
 		clamp(num: number, min: number, max: number): number;
 	}
+
+	interface Array<T> {
+		random(): T;
+	}
 }
 
 declare module 'discord.js' {
