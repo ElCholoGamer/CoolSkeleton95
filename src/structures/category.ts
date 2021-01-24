@@ -6,7 +6,7 @@ class Category {
 
 	public static INFO = new Category('INFO');
 	public static FUN = new Category('FUN');
-	public static ECONOMY = new Category('ECONOMY');
+	public static RPG = new Category('RPG');
 	public static OWNER = new Category('OWNER', false);
 }
 
