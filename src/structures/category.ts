@@ -4,10 +4,10 @@ class Category {
 		public readonly showHelp = true
 	) {}
 
-	public static INFO = new Category('Info');
-	public static FUN = new Category('Fun');
-	public static ECONOMY = new Category('Economy');
-	public static OWNER = new Category('Owner', false);
+	public static INFO = new Category('INFO');
+	public static FUN = new Category('FUN');
+	public static ECONOMY = new Category('ECONOMY');
+	public static OWNER = new Category('OWNER', false);
 }
 
 export default Category;
