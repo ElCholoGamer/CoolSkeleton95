@@ -60,13 +60,23 @@ export default class Help extends Command {
 			const {
 				name,
 				description,
+				category,
 				options: { aliases, permissions, usage = '', exampleArgs },
 			} = command;
 
 			embed
 				.setTitle(`${name.toUpperCase()} COMMAND`)
 				.setDescription(description)
-				.addField('USAGE:', `\`${(prefix + name + ' ' + usage).trim()}\``);
+				.addFields(
+					{
+						name: 'USAGE:',
+						value: `\`${(prefix + name + ' ' + usage).trim()}\``,
+					},
+					{
+						name: 'CATEGORY:',
+						value: category.displayName,
+					}
+				);
 
 			if (aliases?.length) {
 				embed.addField(
