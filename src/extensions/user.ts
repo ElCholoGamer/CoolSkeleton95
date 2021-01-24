@@ -7,5 +7,8 @@ User.prototype.getDocument = async function () {
 };
 
 User.prototype.addGold = async function (amount) {
+	const doc = await this.getDocument();
+	if (doc.isNew) await doc.save();
+
 	await UserModel.findByIdAndUpdate(this.id, { $inc: { gold: amount } });
 };
