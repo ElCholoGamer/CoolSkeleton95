@@ -13,7 +13,7 @@ export interface MonsterOptions {
 
 export interface ActOption {
 	name: string;
-	execute: (this: Monster, battle: Battle) => Awaitable<string>;
+	execute: (this: Monster, battle: Battle) => Awaitable<string | undefined>;
 }
 
 abstract class Monster {
@@ -36,7 +36,7 @@ abstract class Monster {
 	}
 
 	public abstract getAttack(check: boolean, battle: Battle): Awaitable<number>;
-	public abstract getDefense(battle: Battle): Awaitable<number>;
+	public abstract getDefense(check: boolean, battle: Battle): Awaitable<number>;
 	public abstract getXP(battle: Battle): Awaitable<number>;
 	public abstract getGold(spared: boolean, battle: Battle): Awaitable<number>;
 	public abstract getActOptions(battle: Battle): Awaitable<ActOption[]>;

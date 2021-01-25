@@ -30,7 +30,7 @@ class Player {
 		const { monster, channel } = battle;
 
 		const at = await monster.getAttack(true, battle);
-		const def = await monster.getDefense(battle);
+		const def = await monster.getDefense(true, battle);
 
 		const options = await monster.getActOptions(battle);
 		options.unshift({
@@ -75,9 +75,10 @@ class Player {
 		if (index === -1) return false;
 
 		const dialog = await options[index].execute.call(monster, battle);
-
-		await channel.send(this.dialogGenerator.embedDialog(dialog));
-		await sleep(2000);
+		if (dialog) {
+			await channel.send(this.dialogGenerator.embedDialog(dialog));
+			await sleep(2000);
+		}
 
 		return true;
 	}

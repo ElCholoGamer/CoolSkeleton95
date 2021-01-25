@@ -14,7 +14,7 @@ console.log(`Running in ${NODE_ENV} mode`);
 	console.log('Connecting to database...');
 	await db();
 
-	const client = new Client({ restTimeOffset: 200 });
+	const client = new Client({ restTimeOffset: 300 });
 	await startup(client);
 
 	console.log('Logging in...');
