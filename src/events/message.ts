@@ -9,11 +9,11 @@ import { join } from 'path';
 import EventHandler from '../structures/event-handler';
 import { prefix, embedColor, battleChance } from '../config.json';
 import { readFullDir } from '../util/utils';
-import Monster, { ExampleMonster } from '../structures/rpg/monster';
+import Monster from '../structures/rpg/monster';
 import Battle from '../structures/rpg/battle';
 
 class MessageHandler extends EventHandler('message') {
-	private readonly monsters: typeof ExampleMonster[] = [];
+	private readonly monsters: (new () => Monster)[] = [];
 	private readonly FIGHT_MESSAGE = 'fight';
 
 	public constructor(client: Client) {

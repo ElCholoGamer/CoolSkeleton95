@@ -2,6 +2,9 @@ import Battle from '../structures/rpg/battle';
 import Monster, { ActOption } from '../structures/rpg/monster';
 
 class Froggit extends Monster {
+	private complimented = false;
+	private threatened = false;
+
 	public constructor() {
 		super({
 			name: 'Froggit',
@@ -16,13 +19,27 @@ class Froggit extends Monster {
 	public getXP = () => 3;
 	public getGold = () => 2;
 
+	public getAttackDialog() {
+		if (this.complimented) {
+			this.complimented = false;
+			return '(Blushes deeply.) Ribbit...';
+		}
+
+		if (this.threatened) {
+			this.threatened = false;
+			return '(Shiver, shiver.)';
+		}
+
+		return ['Ribbit, ribbit.', 'Croak, croak.', 'Hop, hop.', 'Meow.'].random();
+	}
+
 	public async getBattleDialog(battle: Battle) {
 		if (battle.turn === 1) {
 			const doc = await battle.player.user.getDocument();
 			return doc.gold === 0 ? 'Froggit attacks you!' : 'Froggit hopped close!';
 		}
 
-		if (this.spareable) return 'Froggit seems reluctant to fight you.';
+		if (this._spareable) return 'Froggit seems reluctant to fight you.';
 		if (this.hp < 5) return 'Froggit is trying to run away.';
 
 		return [
@@ -38,13 +55,21 @@ class Froggit extends Monster {
 		const opts: ActOption[] = [
 			{
 				name: 'Compliment',
-				execute: () =>
-					"Froggit didn't understand what you said, but was flattered anyway.",
+				execute: () => {
+					this.threatened = false;
+					this.complimented = true;
+					this._spareable = true;
+					return "Froggit didn't understand what you said, but was flattered anyway.";
+				},
 			},
 			{
 				name: 'Scare',
-				execute: () =>
-					"Froggit didn't understand what you said, but was scared anyway.",
+				execute: () => {
+					this.complimented = false;
+					this.threatened = true;
+					this._spareable = true;
+					return "Froggit didn't understand what you said, but was scared anyway.";
+				},
 			},
 		];
 

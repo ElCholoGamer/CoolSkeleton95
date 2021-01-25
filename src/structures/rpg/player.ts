@@ -5,13 +5,19 @@ import Battle from './battle';
 import { embedColor } from '../../config.json';
 import { MessageReaction } from 'discord.js';
 import { sleep } from '../../util/utils';
+import DialogGenerator from '../../util/dialog-generator';
 
 class Player {
-	public constructor(public readonly user: User, private readonly doc: IUser) {}
+	public constructor(
+		public readonly user: User,
+		private readonly doc: IUser,
+		private readonly dialogGenerator: DialogGenerator
+	) {}
 
 	public static async init(user: User) {
 		const doc = await user.getDocument();
-		return new this(user, doc);
+		const dialogGenerator = await DialogGenerator.init();
+		return new this(user, doc, dialogGenerator);
 	}
 
 	public async fight(battle: Battle): Promise<number> {
@@ -32,7 +38,7 @@ class Player {
 			name: 'Check',
 			execute: () =>
 				[
-					`**${monster.name.toUpperCase()}** - AT ${at} DEF ${def}`,
+					`${monster.name.toUpperCase()} - AT ${at} DEF ${def}`,
 					monster.description,
 				].join('\n'),
 		});
@@ -71,10 +77,8 @@ class Player {
 
 		const dialog = await options[index].execute.call(monster, battle);
 
-		await channel.send(
-			new MessageEmbed().setColor(embedColor).setDescription(dialog)
-		);
-		await sleep(3000);
+		await channel.send(this.dialogGenerator.embedDialog(dialog));
+		await sleep(2000);
 
 		return true;
 	}
@@ -124,11 +128,21 @@ class Player {
 
 		switch (first.emoji.name) {
 			case '❌':
-				// TODO
+				// Spare
+				const gold = await battle.monster.getGold(true, battle);
+				await this.user.addGold(gold);
+				await battle.end(['YOU WON!', `You earned ${gold} gold.`].join('\n'));
 				break;
 			case '🚪':
-				// TODO
-				break;
+				// Flee
+				await battle.end(
+					[
+						"I'm outta here.",
+						"Don't slow me down.",
+						"I've got better to do.",
+					].random()
+				);
+				return true;
 		}
 
 		return true;

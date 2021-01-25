@@ -1,7 +1,13 @@
-import { User, TextChannel, MessageEmbed, MessageReaction } from 'discord.js';
+import {
+	User,
+	TextChannel,
+	MessageReaction,
+	MessageAttachment,
+} from 'discord.js';
 import Monster from './monster';
-import { embedColor } from '../../config.json';
 import Player from './player';
+import { sleep } from '../../util/utils';
+import DialogGenerator from '../../util/dialog-generator';
 
 interface BattleOptions {
 	user: User;
@@ -11,16 +17,19 @@ interface BattleOptions {
 
 class Battle {
 	private _turn = 0;
+	private ended = false;
 
 	private constructor(
 		public readonly player: Player,
 		public readonly channel: TextChannel,
-		public readonly monster: Monster
+		public readonly monster: Monster,
+		private readonly dialogGenerator: DialogGenerator
 	) {}
 
 	public static async init({ user, channel, monster }: BattleOptions) {
 		const player = await Player.init(user);
-		return new this(player, channel, monster);
+		const dialogGenerator = await DialogGenerator.init();
+		return new this(player, channel, monster, dialogGenerator);
 	}
 
 	public get turn() {
@@ -45,14 +54,11 @@ class Battle {
 
 		const doc = await this.player.user.getDocument();
 
-		const embed = new MessageEmbed()
-			.setColor(embedColor)
+		const embed = this.dialogGenerator
+			.embedDialog(dialog)
 			.setTitle('Undertale battle')
 			.setDescription(
 				[
-					'```',
-					dialog,
-					'```',
 					'**HP:**',
 					`You: \`${doc.hp} / 20\``,
 					`${this.monster.name} \`${this.monster.hp} / ${this.monster.fullHP}\``,
@@ -64,6 +70,15 @@ class Battle {
 				].join('\n')
 			)
 			.setFooter('React with an emoji to continue');
+
+		const { image } = this.monster;
+		if (image) {
+			const attachment = new MessageAttachment(
+				`./assets/img/monsters/${image}`,
+				image
+			);
+			embed.attachFiles([attachment]).setThumbnail(`attachment://${image}`);
+		}
 
 		const message = await this.channel.send(embed);
 		for (const emoji of emojis) {
@@ -81,16 +96,14 @@ class Battle {
 		const response = collected.first();
 		if (!response) return this.end('Time limit exceeded');
 
-		let next: boolean;
+		let next = true;
 		switch (emojis.indexOf(response.emoji.name)) {
 			case 0:
 				const damage = await this.player.fight(this);
 				await this.channel.send(
-					new MessageEmbed()
-						.setColor(embedColor)
-						.setDescription(
-							`You strike **${this.monster.name}** and deal ${damage} damage.`
-						)
+					this.dialogGenerator.embedDialog(
+						`You strike ${this.monster.name} and deal ${damage} damage.`
+					)
 				);
 				next = true;
 				break;
@@ -98,27 +111,38 @@ class Battle {
 				next = await this.player.act(this);
 				break;
 			case 2:
-				// ITEM
 				next = await this.player.item(this);
 				break;
 			case 3:
 				next = await this.player.mercy(this);
-				break;
-			default:
-				next = true;
 		}
 
 		if (!next) return this.showMainMenu();
+		if (this.ended) return;
+
+		const attackDialog = await this.monster.getAttackDialog(this);
+		if (attackDialog) {
+			await this.channel.send(this.dialogGenerator.embedDialog(attackDialog));
+			await sleep(1000);
+		}
+
+		const attack = await this.monster.getAttack(this);
+		await this.player.damage(attack);
+
+		await this.channel.send(
+			this.dialogGenerator.embedDialog(
+				`${this.monster.name.toUpperCase()} dealt ${attack} damage!`
+			)
+		);
 
 		this.nextTurn();
 	}
 
 	public async end(message: string) {
+		this.ended = true;
 		this.player.user.inBattle = false;
 
-		await this.channel.send(
-			new MessageEmbed().setColor(embedColor).setDescription(message)
-		);
+		await this.channel.send(this.dialogGenerator.embedDialog(message));
 	}
 }
 
