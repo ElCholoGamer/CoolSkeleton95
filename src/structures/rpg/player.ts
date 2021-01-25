@@ -68,8 +68,6 @@ class Player {
 			{ max: 1, time: 1 * 60 * 60 * 1000 }
 		);
 
-		await message.delete().catch(() => null);
-
 		const first = collected.first();
 		if (!first || first.emoji.name === emojis[0]) return { next: false };
 
@@ -134,8 +132,6 @@ class Player {
 				emojis.includes(r.emoji.name) && u.id === this.user.id,
 			{ max: 1, time: 1 * 60 * 60 * 1000 }
 		);
-
-		await message.delete().catch(() => null);
 
 		const first = collected.first();
 		if (!first || first.emoji.name === emojis[0]) return false;
