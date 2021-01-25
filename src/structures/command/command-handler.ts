@@ -72,7 +72,7 @@ class CommandHandler {
 
 		if (category === Category.OWNER && author.id !== owner) return false;
 
-		if (disabled) {
+		if (disabled && author.id !== owner) {
 			channel.send('THIS COMMAND IS DISABLED TEMPORARILY!');
 			return false;
 		}
