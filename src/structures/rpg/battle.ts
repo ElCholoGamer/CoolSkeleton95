@@ -56,7 +56,7 @@ class Battle {
 
 		const embed = this.dialogGenerator
 			.embedDialog(dialog)
-			.setTitle('Undertale battle')
+			.setTitle('Battle')
 			.setDescription(
 				[
 					'**HP:**',
@@ -79,6 +79,7 @@ class Battle {
 			embed.attachFiles([attachment]).setThumbnail(`attachment://${image}`);
 		}
 
+		// Send menu message
 		const message = await this.channel.send(embed);
 		for (const emoji of emojis) {
 			message.react(emoji).catch(() => null);
@@ -95,7 +96,9 @@ class Battle {
 		const response = collected.first();
 		if (!response) return this.end('Time limit exceeded');
 
+		// Choose action from reaction
 		let next = true;
+		let doAttackDialog = true;
 		switch (emojis.indexOf(response.emoji.name)) {
 			case 0:
 				const damage = await this.player.fight(this);
@@ -109,7 +112,9 @@ class Battle {
 				next = true;
 				break;
 			case 1:
-				next = await this.player.act(this);
+				const actResponse = await this.player.act(this);
+				next = actResponse.next;
+				doAttackDialog = actResponse.doAttackDialog ?? doAttackDialog;
 				break;
 			case 2:
 				next = await this.player.item(this);
@@ -121,6 +126,7 @@ class Battle {
 		if (!next) return this.showMainMenu();
 		if (this.ended) return;
 
+		// Monster dies
 		if (this.monster.hp <= 0) {
 			const gold = await this.monster.getGold(false, this);
 			await this.player.user.addGold(gold);
@@ -130,14 +136,18 @@ class Battle {
 			);
 		}
 
-		const attackDialog = await this.monster.getAttackQuote(this);
-		if (attackDialog) {
-			await this.channel.send(
-				this.dialogGenerator.embedDialog(attackDialog, this.monster.image)
-			);
-			await sleep(1000);
+		// Send attack dialog
+		if (doAttackDialog) {
+			const attackDialog = await this.monster.getAttackQuote(this);
+			if (attackDialog) {
+				await this.channel.send(
+					this.dialogGenerator.embedDialog(attackDialog, this.monster.image)
+				);
+				await sleep(1000);
+			}
 		}
 
+		// Attack player
 		const attack = await this.monster.getAttack(false, this);
 		if (attack > 0) {
 			await this.player.damage(attack);

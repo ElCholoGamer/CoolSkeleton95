@@ -51,14 +51,14 @@ class Loox extends Monster {
 				name: 'Pick On',
 				execute: () => {
 					this.timesPickedOn++;
-					return 'You rude little snipe!';
+					return { message: 'You rude little snipe!', isDialog: true };
 				},
 			},
 			{
 				name: "Don't Pick On",
 				execute: () => {
 					this._spareable = true;
-					return 'Finally someone gets it.';
+					return { message: 'Finally someone gets it.', isDialog: true };
 				},
 			},
 		];

@@ -26,7 +26,9 @@ class Player {
 		return damage;
 	}
 
-	public async act(battle: Battle): Promise<boolean> {
+	public async act(
+		battle: Battle
+	): Promise<{ next: boolean; doAttackDialog?: boolean }> {
 		const { monster, channel } = battle;
 
 		const at = await monster.getAttack(true, battle);
@@ -69,18 +71,30 @@ class Player {
 		await message.delete().catch(() => null);
 
 		const first = collected.first();
-		if (!first || first.emoji.name === emojis[0]) return false;
+		if (!first || first.emoji.name === emojis[0]) return { next: false };
 
 		const index = optionEmojis.indexOf(first.emoji.name);
-		if (index === -1) return false;
+		if (index === -1) return { next: false };
 
-		const dialog = await options[index].execute.call(monster, battle);
-		if (dialog) {
-			await channel.send(this.dialogGenerator.embedDialog(dialog));
+		const actResponse = await options[index].execute.call(monster, battle);
+		if (actResponse) {
+			const { message, isDialog } =
+				typeof actResponse === 'string'
+					? { message: actResponse, isDialog: false }
+					: actResponse;
+
+			await channel.send(
+				this.dialogGenerator.embedDialog(
+					message,
+					isDialog ? monster.image : null
+				)
+			);
 			await sleep(2000);
+
+			return { next: true, doAttackDialog: !isDialog };
 		}
 
-		return true;
+		return { next: true, doAttackDialog: true };
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

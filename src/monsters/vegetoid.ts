@@ -2,8 +2,6 @@ import Battle from '../structures/rpg/battle';
 import Monster, { ActOption } from '../structures/rpg/monster';
 
 class Vegetoid extends Monster {
-	private ateGreens = false;
-
 	public constructor() {
 		super({
 			name: 'Vegetoid',
@@ -19,12 +17,7 @@ class Vegetoid extends Monster {
 	public getGold = (spared: boolean) => (spared ? 4 : 1);
 
 	public getAttackQuote() {
-		if (this.spareable) {
-			if (this.ateGreens) return 'Ate Your Greens';
-
-			this.ateGreens = true;
-			return 'Eat Your Greens';
-		}
+		if (this.spareable) return 'Ate Your Greens';
 
 		return [
 			'Farmed Locally, Very Locally',
@@ -50,13 +43,16 @@ class Vegetoid extends Monster {
 		const opts: ActOption[] = [
 			{
 				name: 'Talk',
-				execute: () => "Plants Can't Talk Dummy",
+				execute: () => ({ message: "Plants Can't Talk Dummy", isDialog: true }),
 			},
 			{
 				name: 'Dinner',
 				execute: () => {
 					this._spareable = true;
-					return undefined;
+					return {
+						message: 'Eat Your Greens',
+						isDialog: true,
+					};
 				},
 			},
 		];
