@@ -8,6 +8,8 @@ import Monster from './monster';
 import Player from './player';
 import { sleep } from '../../util/utils';
 import DialogGenerator from '../../util/dialog-generator';
+import { GuildEmoji } from 'discord.js';
+import { ReactionEmoji } from 'discord.js';
 
 interface BattleOptions {
 	user: User;
@@ -18,6 +20,12 @@ interface BattleOptions {
 class Battle {
 	private _turn = 0;
 	private ended = false;
+	private readonly emojis = [
+		'<:fight:803358237969481788>',
+		'<:act:803358238040653895>',
+		'<:item:803358237977608242>',
+		'<:mercy:803358237956505610>',
+	];
 
 	private constructor(
 		public readonly player: Player,
@@ -30,6 +38,10 @@ class Battle {
 		const player = await Player.init(user);
 		const dialogGenerator = await DialogGenerator.init();
 		return new this(player, channel, monster, dialogGenerator);
+	}
+
+	private findEmojiIndex(emoji: GuildEmoji | ReactionEmoji) {
+		return this.emojis.findIndex(e => e === `<:${emoji.name}:${emoji.id}>`);
 	}
 
 	public get turn() {
@@ -49,11 +61,10 @@ class Battle {
 	}
 
 	private async showMainMenu(): Promise<void> {
-		const emojis = ['⚔️', '🗣️', '💰', '❌'];
 		const dialog = await this.monster.getFlavorText(this);
-
 		const doc = await this.player.user.getDocument();
 
+		const [fight, act, item, mercy] = this.emojis;
 		const embed = this.dialogGenerator
 			.embedDialog(dialog)
 			.setTitle('Battle')
@@ -63,10 +74,10 @@ class Battle {
 					`You: \`${doc.hp} / 20\``,
 					`${this.monster.name}: \`${this.monster.hp} / ${this.monster.fullHP}\``,
 					'',
-					`${emojis[0]} - \`FIGHT\``,
-					`${emojis[1]} - \`ACT\``,
-					`${emojis[2]} - \`ITEM\``,
-					`${emojis[3]} - \`MERCY\``,
+					`${fight} - \`FIGHT\``,
+					`${act} - \`ACT\``,
+					`${item} - \`ITEM\``,
+					`${mercy} - \`MERCY\``,
 				].join('\n')
 			);
 
@@ -81,13 +92,13 @@ class Battle {
 
 		// Send menu message
 		const message = await this.channel.send(embed);
-		for (const emoji of emojis) {
+		for (const emoji of this.emojis) {
 			message.react(emoji).catch(() => null);
 		}
 
 		const collected = await message.awaitReactions(
 			(r: MessageReaction, u: User) =>
-				emojis.includes(r.emoji.name) && u.id === this.player.user.id,
+				this.findEmojiIndex(r.emoji) !== -1 && u.id === this.player.user.id,
 			{ max: 1, time: 1 * 60 * 60 * 1000 }
 		);
 
@@ -99,7 +110,9 @@ class Battle {
 		// Choose action from reaction
 		let next = true;
 		let doAttackDialog = true;
-		switch (emojis.indexOf(response.emoji.name)) {
+
+		const index = this.findEmojiIndex(response.emoji);
+		switch (index) {
 			case 0:
 				const damage = await this.player.fight(this);
 				await this.monster.onDamage(damage, this);
