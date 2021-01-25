@@ -34,12 +34,18 @@ class DialogGenerator {
 
 		const lines = text.split(' ').reduce<string[]>(
 			(acc, word) => {
+				let newLines: string[] = [];
+				if (word.indexOf('\n') !== -1) {
+					[word, ...newLines] = word.split('\n');
+				}
+
 				const last = acc.length - 1;
 				const next = (acc[last] + ' ' + word).trim();
 				const { width } = ctx.measureText(next);
 
 				if (width < 470) {
 					acc[last] = next;
+					newLines.forEach(word => acc.push(word));
 				} else if (acc.length < 3) {
 					acc.push(word);
 				}
@@ -59,14 +65,29 @@ class DialogGenerator {
 		return buf;
 	}
 
-	public embedDialog(dialog: string): MessageEmbed {
+	public embedDialog(
+		dialog: string,
+		monsterImage?: string | null
+	): MessageEmbed {
 		const image = this.generate(dialog);
 
 		const attachment = new MessageAttachment(image, 'dialog.png');
-		return new MessageEmbed()
+		const embed = new MessageEmbed()
 			.setColor(embedColor)
 			.attachFiles([attachment])
 			.setImage('attachment://dialog.png');
+
+		if (monsterImage) {
+			const attachment = new MessageAttachment(
+				`./assets/img/monsters/${monsterImage}`,
+				monsterImage
+			);
+			embed
+				.attachFiles([attachment])
+				.setThumbnail(`attachment://${monsterImage}`);
+		}
+
+		return embed;
 	}
 }
 

@@ -35,7 +35,7 @@ abstract class Monster {
 		this.hp = this.fullHP;
 	}
 
-	public abstract getAttack(battle: Battle): Awaitable<number>;
+	public abstract getAttack(check: boolean, battle: Battle): Awaitable<number>;
 	public abstract getDefense(battle: Battle): Awaitable<number>;
 	public abstract getXP(battle: Battle): Awaitable<number>;
 	public abstract getGold(spared: boolean, battle: Battle): Awaitable<number>;

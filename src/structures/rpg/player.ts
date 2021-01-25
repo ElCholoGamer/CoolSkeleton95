@@ -1,9 +1,8 @@
-import { User, MessageEmbed } from 'discord.js';
+import { User, MessageEmbed, MessageReaction } from 'discord.js';
 import { IUser } from '../../models/user';
 import { NUMBERS, NUMBER_EMOJIS } from '../../util/constants';
 import Battle from './battle';
 import { embedColor } from '../../config.json';
-import { MessageReaction } from 'discord.js';
 import { sleep } from '../../util/utils';
 import DialogGenerator from '../../util/dialog-generator';
 
@@ -30,7 +29,7 @@ class Player {
 	public async act(battle: Battle): Promise<boolean> {
 		const { monster, channel } = battle;
 
-		const at = await monster.getAttack(battle);
+		const at = await monster.getAttack(true, battle);
 		const def = await monster.getDefense(battle);
 
 		const options = await monster.getActOptions(battle);
@@ -52,7 +51,7 @@ class Player {
 				.setTitle('ACT Menu')
 				.setDescription(
 					options
-						.map((opt, index) => `**${opt.name}** - :${NUMBERS[index + 1]}:`)
+						.map((opt, index) => `:${NUMBERS[index + 1]}: - **${opt.name}**`)
 						.join('\n')
 				)
 		);
@@ -105,8 +104,8 @@ class Player {
 				.setTitle('MERCY')
 				.setDescription(
 					[
-						emojis[1] ? `**Spare** - ${emojis[1]}` : '~~Spare~~',
-						emojis[2] ? `**Flee** - ${emojis[2]}` : '~~Flee~~',
+						emojis[1] ? `${emojis[1]} - **Spare**` : '~~Spare~~',
+						emojis[2] ? `${emojis[2]} - **Flee**` : '~~Flee~~',
 					].join('\n')
 				)
 		);
@@ -131,6 +130,8 @@ class Player {
 				// Spare
 				const gold = await battle.monster.getGold(true, battle);
 				await this.user.addGold(gold);
+				await battle.monster.onSpare(battle);
+
 				await battle.end(['YOU WON!', `You earned ${gold} gold.`].join('\n'));
 				break;
 			case '🚪':

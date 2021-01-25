@@ -61,15 +61,14 @@ class Battle {
 				[
 					'**HP:**',
 					`You: \`${doc.hp} / 20\``,
-					`${this.monster.name} \`${this.monster.hp} / ${this.monster.fullHP}\``,
+					`${this.monster.name}: \`${this.monster.hp} / ${this.monster.fullHP}\``,
 					'',
-					`\`FIGHT\` - ${emojis[0]}`,
-					`\`ACT\` - ${emojis[1]}`,
-					`\`ITEM\` - ${emojis[2]}`,
-					`\`MERCY\` - ${emojis[3]}`,
+					`${emojis[0]} - \`FIGHT\``,
+					`${emojis[1]} - \`ACT\``,
+					`${emojis[2]} - \`ITEM\``,
+					`${emojis[3]} - \`MERCY\``,
 				].join('\n')
-			)
-			.setFooter('React with an emoji to continue');
+			);
 
 		const { image } = this.monster;
 		if (image) {
@@ -100,6 +99,8 @@ class Battle {
 		switch (emojis.indexOf(response.emoji.name)) {
 			case 0:
 				const damage = await this.player.fight(this);
+				await this.monster.onDamage(damage, this);
+
 				await this.channel.send(
 					this.dialogGenerator.embedDialog(
 						`You strike ${this.monster.name} and deal ${damage} damage.`
@@ -120,20 +121,33 @@ class Battle {
 		if (!next) return this.showMainMenu();
 		if (this.ended) return;
 
+		if (this.monster.hp <= 0) {
+			const gold = await this.monster.getGold(false, this);
+			await this.player.user.addGold(gold);
+			await this.monster.onDeath(this);
+			return await this.end(
+				['YOU WON!', `You earned ${gold} gold.`].join('\n')
+			);
+		}
+
 		const attackDialog = await this.monster.getAttackDialog(this);
 		if (attackDialog) {
-			await this.channel.send(this.dialogGenerator.embedDialog(attackDialog));
+			await this.channel.send(
+				this.dialogGenerator.embedDialog(attackDialog, this.monster.image)
+			);
 			await sleep(1000);
 		}
 
-		const attack = await this.monster.getAttack(this);
-		await this.player.damage(attack);
+		const attack = await this.monster.getAttack(false, this);
+		if (attack > 0) {
+			await this.player.damage(attack);
 
-		await this.channel.send(
-			this.dialogGenerator.embedDialog(
-				`${this.monster.name.toUpperCase()} dealt ${attack} damage!`
-			)
-		);
+			await this.channel.send(
+				this.dialogGenerator.embedDialog(
+					`${this.monster.name.toUpperCase()} dealt ${attack} damage!`
+				)
+			);
+		}
 
 		this.nextTurn();
 	}
