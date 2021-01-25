@@ -145,11 +145,11 @@ class Dialog extends Command {
 		const lines = rest.reduce<string[]>(
 			(acc, word) => {
 				const last = acc.length - 1;
-				const { width } = ctx.measureText(acc[last]);
+				const next = (acc[last] + ' ' + word).trim();
+				const { width } = ctx.measureText(next);
 
 				if (width < 370) {
-					if (acc[last] !== '') acc[last] += ' ';
-					acc[last] += word;
+					acc[last] = next;
 				} else if (acc.length < 3) {
 					acc.push(word);
 				}
