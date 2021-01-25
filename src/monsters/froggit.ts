@@ -19,7 +19,7 @@ class Froggit extends Monster {
 	public getXP = () => 3;
 	public getGold = () => 2;
 
-	public getAttackDialog() {
+	public getAttackQuote() {
 		if (this.complimented) {
 			this.complimented = false;
 			return '(Blushes deeply.) Ribbit...';
@@ -33,7 +33,7 @@ class Froggit extends Monster {
 		return ['Ribbit, ribbit.', 'Croak, croak.', 'Hop, hop.', 'Meow.'].random();
 	}
 
-	public async getBattleDialog(battle: Battle) {
+	public async getFlavorText(battle: Battle) {
 		if (battle.turn === 1) {
 			const doc = await battle.player.user.getDocument();
 			return doc.gold === 0 ? 'Froggit attacks you!' : 'Froggit hopped close!';

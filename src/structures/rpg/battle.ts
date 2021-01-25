@@ -50,7 +50,7 @@ class Battle {
 
 	private async showMainMenu(): Promise<void> {
 		const emojis = ['⚔️', '🗣️', '💰', '❌'];
-		const dialog = await this.monster.getBattleDialog(this);
+		const dialog = await this.monster.getFlavorText(this);
 
 		const doc = await this.player.user.getDocument();
 
@@ -130,7 +130,7 @@ class Battle {
 			);
 		}
 
-		const attackDialog = await this.monster.getAttackDialog(this);
+		const attackDialog = await this.monster.getAttackQuote(this);
 		if (attackDialog) {
 			await this.channel.send(
 				this.dialogGenerator.embedDialog(attackDialog, this.monster.image)

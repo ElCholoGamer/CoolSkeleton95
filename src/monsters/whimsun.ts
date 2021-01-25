@@ -28,7 +28,7 @@ class Whimsun extends Monster {
 		this.hp = 0;
 	}
 
-	public getAttackDialog() {
+	public getAttackQuote() {
 		if (this.terrorized) return "I can't handle this...";
 
 		return [
@@ -40,7 +40,7 @@ class Whimsun extends Monster {
 		].random();
 	}
 
-	public getBattleDialog(battle: Battle) {
+	public getFlavorText(battle: Battle) {
 		if (battle.turn === 1) return 'Whimsun approached meekly!';
 		if (this.hp < 3) return 'Whimsun is having trouble flying.';
 		if (this.terrorized) return 'Whimsun is hyperventilating.';

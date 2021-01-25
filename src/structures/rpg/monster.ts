@@ -40,9 +40,9 @@ abstract class Monster {
 	public abstract getXP(battle: Battle): Awaitable<number>;
 	public abstract getGold(spared: boolean, battle: Battle): Awaitable<number>;
 	public abstract getActOptions(battle: Battle): Awaitable<ActOption[]>;
-	public abstract getBattleDialog(battle: Battle): Awaitable<string>;
+	public abstract getFlavorText(battle: Battle): Awaitable<string>;
 
-	public getAttackDialog(battle: Battle): Awaitable<string | undefined> {
+	public getAttackQuote(battle: Battle): Awaitable<string | undefined> {
 		return undefined;
 	}
 

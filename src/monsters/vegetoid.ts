@@ -18,7 +18,7 @@ class Vegetoid extends Monster {
 	public getXP = () => 6;
 	public getGold = (spared: boolean) => (spared ? 4 : 1);
 
-	public getAttackDialog() {
+	public getAttackQuote() {
 		if (this.spareable) {
 			if (this.ateGreens) return 'Ate Your Greens';
 
@@ -34,7 +34,7 @@ class Vegetoid extends Monster {
 		].random();
 	}
 
-	public getBattleDialog(battle: Battle) {
+	public getFlavorText(battle: Battle) {
 		if (battle.turn === 1) return 'Vegetoid came out of the earth!';
 		if (this.hp < 15) return 'Vegetoid seems kind of bruised.';
 
