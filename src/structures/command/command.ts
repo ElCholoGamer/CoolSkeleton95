@@ -1,7 +1,16 @@
+import { PermissionResolvable } from 'discord.js';
 import Category from '../category';
 import CommandEvent from './command-event';
 import CommandHandler from './command-handler';
-import CommandOptions from './command-options';
+
+export interface CommandOptions {
+	aliases?: string[];
+	usage?: string;
+	permissions?: PermissionResolvable[];
+	selfPermissions?: PermissionResolvable[];
+	exampleArgs?: string[];
+	disabled?: boolean;
+}
 
 abstract class Command {
 	protected constructor(

@@ -67,10 +67,15 @@ class CommandHandler {
 
 		const {
 			category,
-			options: { permissions = [], selfPermissions = [] },
+			options: { disabled, permissions = [], selfPermissions = [] },
 		} = command;
 
 		if (category === Category.OWNER && author.id !== owner) return false;
+
+		if (disabled) {
+			channel.send('THIS COMMAND IS DISABLED TEMPORARILY!');
+			return false;
+		}
 
 		// Check that author has permissions
 		if (!member.permissions.has(permissions)) {
