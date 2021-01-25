@@ -10,9 +10,11 @@ import EventHandler from '../structures/event-handler';
 import { prefix, embedColor, battleChance } from '../config.json';
 import { readFullDir } from '../util/utils';
 import Monster, { ExampleMonster } from '../structures/rpg/monster';
+import Battle from '../structures/rpg/battle';
 
 class MessageHandler extends EventHandler('message') {
 	private readonly monsters: typeof ExampleMonster[] = [];
+	private readonly FIGHT_MESSAGE = 'fight';
 
 	public constructor(client: Client) {
 		super(client);
@@ -41,7 +43,8 @@ class MessageHandler extends EventHandler('message') {
 			author.bot ||
 			content.toLowerCase().startsWith(prefix.toLowerCase()) ||
 			!guild ||
-			Math.random() > battleChance
+			Math.random() > battleChance ||
+			content !== '!fight'
 		)
 			return;
 
@@ -56,7 +59,8 @@ class MessageHandler extends EventHandler('message') {
 
 		const embed = new MessageEmbed()
 			.setColor(embedColor)
-			.setDescription(`A wild **${monster.name}** draws near!`);
+			.setDescription(`A wild **${monster.name}** draws near!`)
+			.setFooter('Type "fight" to start the battle!');
 
 		const { image } = monster;
 		if (image) {
@@ -67,7 +71,24 @@ class MessageHandler extends EventHandler('message') {
 			embed.attachFiles([attachment]).setImage(`attachment://${image}`);
 		}
 
-		await channel.send(embed);
+		const spawnMessage = await channel.send(embed);
+
+		const collected = await channel.awaitMessages(
+			(m: Message) =>
+				m.content.toLowerCase() === this.FIGHT_MESSAGE &&
+				!m.author.bot &&
+				!m.author.inBattle,
+			{ max: 1, time: 6e4 }
+		);
+
+		const first = collected.first();
+		await spawnMessage.delete();
+
+		if (!first) return;
+
+		const user = first.author;
+		const battle = await Battle.init({ user, channel, monster });
+		await battle.start();
 	}
 }
 

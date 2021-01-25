@@ -19,6 +19,7 @@
 		"arrow-parens": ["error", "as-needed"],
 		"no-useless-concat": "error",
 		"quotes": ["error", "single", { "avoidEscape": true }],
-		"no-cond-assign": "off"
+		"no-cond-assign": "off",
+		"no-case-declarations": "off"
 	}
 }

@@ -26,3 +26,6 @@ export const formatList = (list: any[]) => list.map(e => `\`${e}\``).join(', ');
 
 export const formatPermissions = (list: any[]) =>
 	list.map(perm => `\`${perm.toString().replace(/-/g, ' ')}\``);
+
+export const sleep = (time: number) =>
+	new Promise<number>(resolve => setTimeout(() => resolve(time), time));

@@ -1,16 +1,30 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import BattleContext from './battle-context';
-import MonsterOptions from './monster-options';
+import Battle from './battle';
 
 type Awaitable<T> = Promise<T> | T;
+
+export interface MonsterOptions {
+	name: string;
+	description: string;
+	fullHP: number;
+	image?: string;
+}
+
+export interface ActOption {
+	name: string;
+	execute: (this: Monster, battle: Battle) => Awaitable<string>;
+}
 
 abstract class Monster {
 	public readonly name: string;
 	public readonly description: string;
 	public readonly fullHP: number;
 	public readonly image: string | null;
+
 	public hp: number;
+	public spareable = false;
+	public fleeable = false;
 
 	public constructor(options: MonsterOptions) {
 		this.name = options.name;
@@ -21,43 +35,33 @@ abstract class Monster {
 		this.hp = this.fullHP;
 	}
 
-	public abstract getAttack(ctx: BattleContext): Awaitable<number>;
-	public abstract getDefense(ctx: BattleContext): Awaitable<number>;
-	public abstract getXP(ctx: BattleContext): Awaitable<number>;
-	public abstract getGold(ctx: BattleContext): Awaitable<number>;
-	public abstract getActOptions(
-		ctx: BattleContext
-	): Awaitable<Record<string, () => void>>;
+	public abstract getAttack(battle: Battle): Awaitable<number>;
+	public abstract getDefense(battle: Battle): Awaitable<number>;
+	public abstract getXP(battle: Battle): Awaitable<number>;
+	public abstract getGold(battle: Battle): Awaitable<number>;
+	public abstract getActOptions(battle: Battle): Awaitable<ActOption[]>;
+	public abstract getBattleDialog(battle: Battle): Awaitable<string>;
 
-	public onSpawn(ctx: BattleContext): Awaitable<void> {}
-	public onAttack(dmg: number, ctx: BattleContext): Awaitable<void> {}
-	public onDeath(ctx: BattleContext): Awaitable<void> {}
-	public onSpare(ctx: BattleContext): Awaitable<void> {}
+	public onSpawn(battle: Battle): Awaitable<void> {}
+	public onAttack(damage: number, battle: Battle): Awaitable<void> {}
+	public onDeath(battle: Battle): Awaitable<void> {}
+	public onSpare(battle: Battle): Awaitable<void> {}
 }
 
 export class ExampleMonster extends Monster {
-	public constructor() {
+	constructor() {
 		super({
 			name: 'example',
 			description: 'An example monster',
 			fullHP: 0,
 		});
 	}
-	public getAttack() {
-		return 0;
-	}
-	public getDefense() {
-		return 0;
-	}
-	public getXP() {
-		return 0;
-	}
-	public getGold() {
-		return 0;
-	}
-	getActOptions() {
-		return {};
-	}
+	getAttack = () => 0;
+	getDefense = () => 0;
+	getXP = () => 0;
+	getGold = () => 0;
+	getBattleDialog = () => '';
+	getActOptions = () => [];
 }
 
 export default Monster;
