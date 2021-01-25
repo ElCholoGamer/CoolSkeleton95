@@ -10,7 +10,7 @@ class SetChannel extends Command {
 			'SETS THE RPG CHANNEL ON THIS SERVER.',
 			Category.RPG,
 			handler,
-			{ permissions: ['ADMINISTRATOR'] }
+			{ permissions: ['ADMINISTRATOR'], disabled: true }
 		);
 	}
 
