@@ -2,12 +2,11 @@ import { MessageEmbed } from 'discord.js';
 import Category from '../../structures/category';
 import Command from '../../structures/command/command';
 import CommandEvent from '../../structures/command/command-event';
-import CommandHandler from '../../structures/command/command-handler';
 import { embedColor } from '../../config.json';
 
 class Inventory extends Command {
-	public constructor(handler: CommandHandler) {
-		super('inventory', 'SHOWS YOUR INVENTORY, DUH.', Category.RPG, handler, {
+	public constructor() {
+		super('inventory', 'SHOWS YOUR INVENTORY, DUH.', Category.RPG, {
 			aliases: ['inv'],
 		});
 	}

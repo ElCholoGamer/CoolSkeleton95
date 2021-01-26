@@ -1,7 +1,6 @@
 import { PermissionResolvable } from 'discord.js';
 import Category from '../category';
 import CommandEvent from './command-event';
-import CommandHandler from './command-handler';
 
 export interface CommandOptions {
 	aliases?: string[];
@@ -17,7 +16,6 @@ abstract class Command {
 		public readonly name: string,
 		public readonly description: string,
 		public readonly category: Category,
-		public readonly commandHandler: CommandHandler,
 		public readonly options: Readonly<CommandOptions> = {}
 	) {}
 

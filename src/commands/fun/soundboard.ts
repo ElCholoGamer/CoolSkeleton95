@@ -3,7 +3,6 @@ import { basename } from 'path';
 import Category from '../../structures/category';
 import Command from '../../structures/command/command';
 import CommandEvent from '../../structures/command/command-event';
-import CommandHandler from '../../structures/command/command-handler';
 import { readFullDir, removeExtension } from '../../util/utils';
 import { embedColor } from '../../config.json';
 import { NUMBERS, NUMBER_EMOJIS } from '../../util/constants';
@@ -17,12 +16,11 @@ class Soundboard extends Command {
 	private readonly pages: Sound[][] = [];
 	private readonly PAGE_LIMIT = 5;
 
-	public constructor(handler: CommandHandler) {
+	public constructor() {
 		super(
 			'soundboard',
 			'JOINS A VOICE CHANNEL TO PLAY SOME SOUNDS.',
 			Category.FUN,
-			handler,
 			{ selfPermissions: ['CONNECT', 'SPEAK', 'DEAFEN_MEMBERS'] }
 		);
 

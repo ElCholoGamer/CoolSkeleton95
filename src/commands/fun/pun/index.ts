@@ -1,16 +1,14 @@
 import Category from '../../../structures/category';
 import Command from '../../../structures/command/command';
 import CommandEvent from '../../../structures/command/command-event';
-import CommandHandler from '../../../structures/command/command-handler';
 import puns from './puns.json';
 
 class Pun extends Command {
-	public constructor(handler: CommandHandler) {
+	public constructor() {
 		super(
 			'pun',
 			"DONT'T BLAME ME, SANS TOLD ME TO MAKE THIS COMMAND. SERIOUSLY, THESE PUNS ARE REALLY BAD!!!",
-			Category.FUN,
-			handler
+			Category.FUN
 		);
 	}
 

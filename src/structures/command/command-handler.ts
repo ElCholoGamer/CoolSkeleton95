@@ -22,11 +22,12 @@ class CommandHandler {
 		// Import and register all commands
 		await Promise.all(
 			files.map(async file => {
-				const { default: Command } = await import(file);
-				if (typeof Command !== 'function') return;
+				const CommandConstructor = (await import(file)).default;
+				if (typeof CommandConstructor !== 'function') return;
 
-				const command: Command = new Command(this);
-				this.commands.set(command.name, command);
+				const command = new CommandConstructor();
+				if (command instanceof Command)
+					this.commands.set(command.name, command);
 			})
 		);
 

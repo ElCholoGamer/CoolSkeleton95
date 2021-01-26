@@ -1,17 +1,13 @@
 import Category from '../../structures/category';
 import Command from '../../structures/command/command';
 import CommandEvent from '../../structures/command/command-event';
-import CommandHandler from '../../structures/command/command-handler';
 
 class SetChannel extends Command {
-	public constructor(handler: CommandHandler) {
-		super(
-			'setchannel',
-			'SETS THE RPG CHANNEL ON THIS SERVER.',
-			Category.RPG,
-			handler,
-			{ permissions: ['ADMINISTRATOR'], disabled: true }
-		);
+	public constructor() {
+		super('setchannel', 'SETS THE RPG CHANNEL ON THIS SERVER.', Category.RPG, {
+			permissions: ['ADMINISTRATOR'],
+			disabled: true,
+		});
 	}
 
 	public async execute({ message, channel, guild }: CommandEvent) {

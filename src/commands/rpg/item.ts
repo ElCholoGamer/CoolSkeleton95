@@ -2,12 +2,11 @@ import { MessageEmbed } from 'discord.js';
 import Category from '../../structures/category';
 import Command from '../../structures/command/command';
 import CommandEvent from '../../structures/command/command-event';
-import CommandHandler from '../../structures/command/command-handler';
 import { embedColor } from '../../config.json';
 
 class Item extends Command {
-	public constructor(handler: CommandHandler) {
-		super('item', 'SHOWS INFO ABOUT AN ITEM.', Category.RPG, handler);
+	public constructor() {
+		super('item', 'SHOWS INFO ABOUT AN ITEM.', Category.RPG);
 	}
 
 	public async execute({ channel, args, client }: CommandEvent) {

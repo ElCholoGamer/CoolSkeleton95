@@ -2,18 +2,12 @@ import { MessageEmbed } from 'discord.js';
 import Category from '../../structures/category';
 import Command from '../../structures/command/command';
 import CommandEvent from '../../structures/command/command-event';
-import CommandHandler from '../../structures/command/command-handler';
 import { prefix, embedColor } from '../../config.json';
 import { inspect } from 'util';
 
 class Eval extends Command {
-	public constructor(handler: CommandHandler) {
-		super(
-			'eval',
-			'Evaluates a JavaScript expression.',
-			Category.OWNER,
-			handler
-		);
+	public constructor() {
+		super('eval', 'Evaluates a JavaScript expression.', Category.OWNER);
 	}
 
 	public async execute({ args, channel, message }: CommandEvent) {
