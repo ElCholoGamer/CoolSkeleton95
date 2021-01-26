@@ -25,3 +25,5 @@ export const NUMBER_EMOJIS = [
 	'9️⃣',
 	'🔟',
 ];
+
+export type Awaitable<T> = Promise<T> | T;
