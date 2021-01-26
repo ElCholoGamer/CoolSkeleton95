@@ -1,6 +1,6 @@
 import { MessageEmbed } from 'discord.js';
 import Category from '../../structures/category';
-import Command from '../../structures/command/command';
+import Command from '../../structures/command';
 import CommandEvent from '../../structures/command/command-event';
 import { prefix, embedColor } from '../../config.json';
 import { inspect } from 'util';

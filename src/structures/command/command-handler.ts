@@ -1,7 +1,7 @@
 import { DMChannel, Client, Collection, Message } from 'discord.js';
 import { join } from 'path';
 import { formatPermissions, readFullDir } from '../../util/utils';
-import Command from './command';
+import Command from '.';
 import { prefix, owner } from '../../config.json';
 import Category from '../category';
 import CommandEvent from './command-event';

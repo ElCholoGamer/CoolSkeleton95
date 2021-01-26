@@ -3,7 +3,7 @@ import { MessageEmbed, MessageAttachment } from 'discord.js';
 import { readdir } from 'fs/promises';
 import { join } from 'path';
 import Category from '../../structures/category';
-import Command from '../../structures/command/command';
+import Command from '../../structures/command';
 import CommandEvent from '../../structures/command/command-event';
 import { formatList, removeExtension } from '../../util/utils';
 import { embedColor } from '../../config.json';

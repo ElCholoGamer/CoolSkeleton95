@@ -1,5 +1,5 @@
 import Category from '../../structures/category';
-import Command from '../../structures/command/command';
+import Command from '../../structures/command';
 import CommandEvent from '../../structures/command/command-event';
 import DialogGenerator from '../../util/dialog-generator';
 

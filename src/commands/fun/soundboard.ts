@@ -1,7 +1,7 @@
 import { MessageEmbed, MessageReaction, User } from 'discord.js';
 import { basename } from 'path';
 import Category from '../../structures/category';
-import Command from '../../structures/command/command';
+import Command from '../../structures/command';
 import CommandEvent from '../../structures/command/command-event';
 import { readFullDir, removeExtension } from '../../util/utils';
 import { embedColor } from '../../config.json';
