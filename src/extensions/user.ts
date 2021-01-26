@@ -13,3 +13,13 @@ User.prototype.addGold = async function (amount) {
 	doc.gold = Math.max(doc.gold + amount, 0);
 	return doc.save();
 };
+
+User.prototype.heal = async function (amount) {
+	const doc = await this.getDocument();
+	doc.hp = Math.clamp(doc.hp + amount, 0, 20);
+	return doc.save();
+};
+
+User.prototype.damage = function (amount) {
+	return this.heal(-amount);
+};

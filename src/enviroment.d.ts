@@ -31,6 +31,8 @@ declare module 'discord.js' {
 	interface User {
 		inBattle: boolean;
 		getDocument(): Promise<IUser>;
+		heal(amount: number): Promise<IUser>;
+		damage(amount: number): Promise<IUser>;
 		addGold(amount: number): Promise<IUser>;
 	}
 }
