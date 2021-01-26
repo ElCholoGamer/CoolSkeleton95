@@ -1,26 +1,26 @@
 import { User } from 'discord.js';
 import Item, { ItemType } from '../../structures/rpg/item';
 
-class SpiderDonut extends Item {
+class SpiderCider extends Item {
 	public constructor() {
 		super({
-			id: 7,
-			name: 'Spider Donut',
-			description: 'A donut made with Spider Cider in the batter.',
-			price: 7,
+			id: 10,
+			name: 'Spider Cider',
+			description: 'Made with whole spiders, not just the juice.',
+			price: 18,
 			type: ItemType.CONSUMABLE,
 		});
 	}
 
 	public async onBuy(user: User, amount: number) {
-		const displayAmount = amount === 1 ? 'a donut' : `${amount} donuts`;
+		const displayAmount = amount === 1 ? 'a jug' : `${amount} jugs`;
 		return `Some spiders crawled down and gave you ${displayAmount}.`;
 	}
 
 	public async use(user: User) {
-		await user.heal(12);
-		return "Don't worry, spider didn't.";
+		await user.heal(24);
+		return 'You drank the Spider Cider.';
 	}
 }
 
-export default SpiderDonut;
+export default SpiderCider;
