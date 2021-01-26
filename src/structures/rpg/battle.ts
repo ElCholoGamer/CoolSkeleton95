@@ -3,13 +3,13 @@ import {
 	TextChannel,
 	MessageReaction,
 	MessageAttachment,
+	GuildEmoji,
+	ReactionEmoji,
 } from 'discord.js';
 import Monster from './monster';
 import Player from './player';
 import { sleep } from '../../util/utils';
 import DialogGenerator from '../../util/dialog-generator';
-import { GuildEmoji } from 'discord.js';
-import { ReactionEmoji } from 'discord.js';
 
 interface BattleOptions {
 	user: User;
