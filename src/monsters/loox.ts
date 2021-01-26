@@ -2,6 +2,7 @@ import Battle from '../structures/rpg/battle';
 import Monster, { ActOption } from '../structures/rpg/monster';
 
 class Loox extends Monster {
+	private lastAct: null | 'pickOn' | 'notPickOn' = null;
 	private timesPickedOn = 0;
 
 	public constructor() {
@@ -31,6 +32,15 @@ class Loox extends Monster {
 	}
 
 	public getAttackQuote(battle: Battle) {
+		if (this.lastAct) {
+			const prev = this.lastAct;
+			this.lastAct = null;
+
+			return prev === 'pickOn'
+				? 'You rude little snipe!'
+				: 'Finally someone gets it.';
+		}
+
 		if (battle.turn === 1) {
 			if (this.spareable) return undefined;
 			return "Please don't pick on me.";
@@ -51,14 +61,16 @@ class Loox extends Monster {
 				name: 'Pick On',
 				execute: () => {
 					this.timesPickedOn++;
-					return { message: 'You rude little snipe!', isDialog: true };
+					this.lastAct = 'pickOn';
+					return undefined;
 				},
 			},
 			{
 				name: "Don't Pick On",
 				execute: () => {
 					this._spareable = true;
-					return { message: 'Finally someone gets it.', isDialog: true };
+					this.lastAct = 'notPickOn';
+					return undefined;
 				},
 			},
 		];

@@ -109,9 +109,8 @@ class Battle {
 
 		// Choose action from reaction
 		let next = true;
-		let doAttackDialog = true;
-
 		const index = this.findEmojiIndex(response.emoji);
+
 		switch (index) {
 			case 0:
 				const damage = await this.player.fight(this);
@@ -125,9 +124,7 @@ class Battle {
 				next = true;
 				break;
 			case 1:
-				const actResponse = await this.player.act(this);
-				next = actResponse.next;
-				doAttackDialog = actResponse.doAttackDialog ?? doAttackDialog;
+				next = await this.player.act(this);
 				break;
 			case 2:
 				next = await this.player.item(this);
@@ -136,28 +133,27 @@ class Battle {
 				next = await this.player.mercy(this);
 		}
 
-		if (!next) return this.showMainMenu();
 		if (this.ended) return;
+		if (!next) return this.showMainMenu();
 
 		// Monster dies
 		if (this.monster.hp <= 0) {
 			const gold = await this.monster.getGold(false, this);
 			await this.player.user.addGold(gold);
 			await this.monster.onDeath(this);
+
 			return await this.end(
 				['YOU WON!', `You earned ${gold} gold.`].join('\n')
 			);
 		}
 
 		// Send attack dialog
-		if (doAttackDialog) {
-			const attackDialog = await this.monster.getAttackQuote(this);
-			if (attackDialog) {
-				await this.channel.send(
-					this.dialogGenerator.embedDialog(attackDialog, this.monster.image)
-				);
-				await sleep(1000);
-			}
+		const attackDialog = await this.monster.getAttackQuote(this);
+		if (attackDialog) {
+			await this.channel.send(
+				this.dialogGenerator.embedDialog(attackDialog, this.monster.image)
+			);
+			await sleep(1000);
 		}
 
 		// Attack player

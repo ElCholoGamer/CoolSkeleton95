@@ -13,10 +13,7 @@ export interface MonsterOptions {
 
 export interface ActOption {
 	name: string;
-	execute: (
-		this: Monster,
-		battle: Battle
-	) => Awaitable<{ message: string; isDialog: boolean } | string | undefined>;
+	execute: (this: Monster, battle: Battle) => Awaitable<string | undefined>;
 }
 
 abstract class Monster {
