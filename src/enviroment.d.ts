@@ -1,5 +1,6 @@
 import { IGuild } from './models/guild';
 import { IUser } from './models/user';
+import Shop from './rpg/shop';
 import CommandHandler from './structures/command/command-handler';
 
 declare global {
@@ -22,6 +23,7 @@ declare global {
 declare module 'discord.js' {
 	interface Client {
 		commandHandler: CommandHandler;
+		shop: Shop;
 	}
 
 	interface Guild {
@@ -34,5 +36,8 @@ declare module 'discord.js' {
 		heal(amount: number): Promise<IUser>;
 		damage(amount: number): Promise<IUser>;
 		addGold(amount: number): Promise<IUser>;
+
+		addItem(id: number, amount?: number): Promise<IUser>;
+		removeItem(id: number, amount?: number): Promise<IUser>;
 	}
 }

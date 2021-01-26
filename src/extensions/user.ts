@@ -23,3 +23,22 @@ User.prototype.heal = async function (amount) {
 User.prototype.damage = function (amount) {
 	return this.heal(-amount);
 };
+
+User.prototype.addItem = async function (id, amount = 1) {
+	const stringID = id.toString();
+	const doc = await this.getDocument();
+
+	let newAmount = doc.items.get(stringID) ?? 0;
+	newAmount = Math.max(newAmount + amount, 0);
+
+	if (newAmount <= 0) {
+		doc.items.delete(stringID);
+	} else {
+		doc.items.set(stringID, newAmount);
+	}
+	return doc.save();
+};
+
+User.prototype.removeItem = function (id, amount = 1) {
+	return this.addItem(id, -amount);
+};
