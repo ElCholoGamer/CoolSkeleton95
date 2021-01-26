@@ -81,7 +81,7 @@ export default class Help extends Command {
 			}
 
 			if (permissions?.length) {
-				embed.addField('PERMISSIONS:', formatPermissions(permissions));
+				embed.addField('REQUIRED PERMISSIONS:', formatPermissions(permissions));
 			}
 
 			if (exampleArgs?.length) {

@@ -4,7 +4,9 @@ import CommandEvent from '../../structures/command/command-event';
 
 class Buy extends Command {
 	public constructor() {
-		super('buy', 'BUYS AN ITEM FROM THE SHOP.', Category.RPG);
+		super('buy', 'BUYS AN ITEM FROM THE SHOP.', Category.RPG, {
+			usage: '[item]',
+		});
 	}
 
 	public async execute({ args, channel, client, author }: CommandEvent) {

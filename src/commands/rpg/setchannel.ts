@@ -5,6 +5,7 @@ import CommandEvent from '../../structures/command/command-event';
 class SetChannel extends Command {
 	public constructor() {
 		super('setchannel', 'SETS THE RPG CHANNEL ON THIS SERVER.', Category.RPG, {
+			usage: '[#channel]',
 			permissions: ['ADMINISTRATOR'],
 			disabled: true,
 		});

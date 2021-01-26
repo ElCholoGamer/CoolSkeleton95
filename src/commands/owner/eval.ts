@@ -7,7 +7,9 @@ import { inspect } from 'util';
 
 class Eval extends Command {
 	public constructor() {
-		super('eval', 'Evaluates a JavaScript expression.', Category.OWNER);
+		super('eval', 'Evaluates a JavaScript expression.', Category.OWNER, {
+			usage: '[expression]',
+		});
 	}
 
 	public async execute({ args, channel, message }: CommandEvent) {

@@ -6,7 +6,9 @@ import { embedColor } from '../../config.json';
 
 class Item extends Command {
 	public constructor() {
-		super('item', 'SHOWS INFO ABOUT AN ITEM.', Category.RPG);
+		super('item', 'SHOWS INFO ABOUT AN ITEM.', Category.RPG, {
+			usage: '[item]',
+		});
 	}
 
 	public async execute({ channel, args, client }: CommandEvent) {
