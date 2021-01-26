@@ -1,4 +1,5 @@
 import { User } from 'discord.js';
+import { Awaitable } from '../../util/constants';
 import Battle from './battle';
 
 export interface ItemOptions {
@@ -31,11 +32,11 @@ abstract class Item {
 		this.type = options.type;
 	}
 
-	public async onBuy(user: User, amount: number): Promise<string | undefined> {
+	public onBuy(user: User, amount: number): Awaitable<string | undefined> {
 		return `You bought ${this.name} x${amount}.`;
 	}
 
-	public abstract use(user: User, battle?: Battle): Promise<string>;
+	public abstract use(user: User, battle?: Battle): Awaitable<string>;
 }
 
 export default Item;

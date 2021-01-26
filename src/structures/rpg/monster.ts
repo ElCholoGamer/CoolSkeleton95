@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { Awaitable } from '../../util/constants';
 import Battle from './battle';
-
-type Awaitable<T> = Promise<T> | T;
 
 export interface MonsterOptions {
 	name: string;
