@@ -8,6 +8,11 @@ User.prototype.getDocument = async function () {
 	return found ?? new UserModel({ _id: this.id });
 };
 
+User.prototype.getGold = async function () {
+	const doc = await this.getDocument();
+	return doc.gold;
+};
+
 User.prototype.addGold = async function (amount) {
 	const doc = await this.getDocument();
 	doc.gold = Math.max(doc.gold + amount, 0);

@@ -35,6 +35,8 @@ declare module 'discord.js' {
 		getDocument(): Promise<IUser>;
 		heal(amount: number): Promise<IUser>;
 		damage(amount: number): Promise<IUser>;
+
+		getGold(): Promise<number>;
 		addGold(amount: number): Promise<IUser>;
 
 		addItem(id: number, amount?: number): Promise<IUser>;
