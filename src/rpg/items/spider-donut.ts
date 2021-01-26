@@ -1,5 +1,5 @@
 import { User } from 'discord.js';
-import Item from '../structures/rpg/item';
+import Item from '../../structures/rpg/item';
 
 class SpiderDonut extends Item {
 	public constructor() {

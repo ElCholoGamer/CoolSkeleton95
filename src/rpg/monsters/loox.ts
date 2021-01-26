@@ -1,5 +1,5 @@
-import Battle from '../structures/rpg/battle';
-import Monster, { ActOption } from '../structures/rpg/monster';
+import Battle from '../../structures/rpg/battle';
+import Monster, { ActOption } from '../../structures/rpg/monster';
 
 class Loox extends Monster {
 	private lastAct: null | 'pickOn' | 'notPickOn' = null;

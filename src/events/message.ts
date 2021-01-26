@@ -22,7 +22,7 @@ class MessageHandler extends EventHandler('message') {
 	}
 
 	private async loadMonsters() {
-		const monsterFiles = await readFullDir(join(__dirname, '../monsters'));
+		const monsterFiles = await readFullDir(join(__dirname, '../rpg/monsters'));
 		await Promise.all(
 			monsterFiles.map(async file => {
 				const MonsterConstructor = (await import(file)).default;
