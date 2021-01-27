@@ -47,7 +47,7 @@ class Profile extends Command {
 		ctx.strokeStyle = 'white';
 		ctx.strokeRect(0, 0, width, height);
 
-		const avatarURL = user.displayAvatarURL({ format: 'png', size: 512 });
+		const avatarURL = user.displayAvatarURL({ format: 'png', size: 256 });
 		const avatar = this.grayscale(await loadImage(avatarURL));
 
 		// Avatar
