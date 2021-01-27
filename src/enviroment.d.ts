@@ -17,6 +17,7 @@ declare global {
 
 	interface Array<T> {
 		random(): T;
+		chunk(chunkSize: number): T[][];
 	}
 }
 
