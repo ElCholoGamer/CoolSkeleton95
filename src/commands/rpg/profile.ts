@@ -21,11 +21,9 @@ class Profile extends Command {
 		const chunks = Array.prototype.chunk.call(data, 4);
 		for (let i = 0; i < chunks.length; i++) {
 			const [r, g, b, a] = chunks[i];
-			const med = ((r + g + b) / 3) * (a / 255);
+			const avg = ((r + g + b) / 3) * (a / 255);
 
-			data[i * 4] = med;
-			data[i * 4 + 1] = med;
-			data[i * 4 + 2] = med;
+			data[i * 4] = data[i * 4 + 1] = data[i * 4 + 2] = avg;
 			data[i * 4 + 3] = 255;
 		}
 
