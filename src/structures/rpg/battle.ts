@@ -8,7 +8,7 @@ import {
 } from 'discord.js';
 import Monster from './monster';
 import Player from './player';
-import { sleep } from '../../util/utils';
+import { getMaxHP, sleep } from '../../util/utils';
 import DialogGenerator from '../../util/dialog-generator';
 
 interface BattleOptions {
@@ -71,7 +71,7 @@ class Battle {
 			.setDescription(
 				[
 					'**HP:**',
-					`You: \`${doc.hp} / 20\``,
+					`You: \`${doc.hp} / ${getMaxHP(doc.lv)}\``,
 					`${this.monster.name}: \`${this.monster.hp} / ${this.monster.fullHP}\``,
 					'',
 					`${fight} - \`FIGHT\``,

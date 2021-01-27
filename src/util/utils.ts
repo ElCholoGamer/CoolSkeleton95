@@ -29,3 +29,5 @@ export const formatPermissions = (list: any[]) =>
 
 export const sleep = (time: number) =>
 	new Promise<number>(resolve => setTimeout(() => resolve(time), time));
+
+export const getMaxHP = (lv: number) => 16 + lv * 4;

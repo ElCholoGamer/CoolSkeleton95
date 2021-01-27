@@ -3,7 +3,7 @@ import { IUser } from '../../models/user';
 import { NUMBERS, NUMBER_EMOJIS } from '../../util/constants';
 import Battle from './battle';
 import { embedColor } from '../../config.json';
-import { sleep } from '../../util/utils';
+import { getMaxHP, sleep } from '../../util/utils';
 import DialogGenerator from '../../util/dialog-generator';
 
 class Player {
@@ -147,7 +147,7 @@ class Player {
 	}
 
 	public async heal(amount: number, save = true) {
-		this.doc.hp = Math.clamp(this.doc.hp + amount, 0, 20);
+		this.doc.hp = Math.clamp(this.doc.hp + amount, 0, getMaxHP(this.doc.lv));
 		if (save) await this.doc.save();
 	}
 

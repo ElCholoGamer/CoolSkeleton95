@@ -1,5 +1,6 @@
 import { User } from 'discord.js';
 import UserModel from '../models/user';
+import { getMaxHP } from '../util/utils';
 
 User.prototype.inBattle = false;
 
@@ -21,7 +22,7 @@ User.prototype.addGold = async function (amount) {
 
 User.prototype.heal = async function (amount) {
 	const doc = await this.getDocument();
-	doc.hp = Math.clamp(doc.hp + amount, 0, 20);
+	doc.hp = Math.clamp(doc.hp + amount, 0, getMaxHP(doc.lv));
 	return doc.save();
 };
 

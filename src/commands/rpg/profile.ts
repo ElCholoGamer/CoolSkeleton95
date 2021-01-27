@@ -3,6 +3,7 @@ import { Canvas, createCanvas, Image, loadImage } from 'canvas';
 import Category from '../../structures/category';
 import Command from '../../structures/command';
 import CommandEvent from '../../structures/command/command-event';
+import { getMaxHP } from '../../util/utils';
 
 class Profile extends Command {
 	public constructor() {
@@ -34,7 +35,8 @@ class Profile extends Command {
 	public async execute({ channel, author, message }: CommandEvent) {
 		const user = message.mentions.users.filter(u => !u.bot).first() ?? author;
 
-		const { hp, gold } = await user.getDocument();
+		const { hp, gold, lv } = await user.getDocument();
+		const maxHP = getMaxHP(lv);
 
 		const [width, height] = [800, 270];
 		const canvas = createCanvas(width, height);
@@ -76,7 +78,7 @@ class Profile extends Command {
 		ctx.fillText(`${gold}G`, width - 50, 195);
 
 		// HP bar
-		const percentage = hp / 20;
+		const percentage = hp / maxHP;
 		const fullWidth = 80;
 		const [x, y, barHeight] = [305, 175, 45];
 
@@ -90,7 +92,7 @@ class Profile extends Command {
 		ctx.fillStyle = 'white';
 		ctx.textAlign = 'left';
 		ctx.font = '16px UT HP';
-		ctx.fillText(`${hp}/20`, x + fullWidth + 15, y + barHeight / 2);
+		ctx.fillText(`${hp}/${maxHP}`, x + fullWidth + 15, y + barHeight / 2);
 
 		ctx.textAlign = 'right';
 		ctx.fillText('HP', x - 12, y + barHeight / 2);
