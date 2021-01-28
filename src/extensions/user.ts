@@ -1,5 +1,6 @@
 import { User } from 'discord.js';
 import UserModel from '../models/user';
+import { EXP_LIMITS } from '../util/constants';
 import { getMaxHP } from '../util/utils';
 
 User.prototype.inBattle = false;
@@ -47,4 +48,16 @@ User.prototype.addItem = async function (id, amount = 1) {
 
 User.prototype.removeItem = function (id, amount = 1) {
 	return this.addItem(id, -amount);
+};
+
+User.prototype.addExp = async function (amount) {
+	const doc = await this.getDocument();
+	doc.exp = Math.clamp(doc.exp + amount, 0, EXP_LIMITS[EXP_LIMITS.length - 1]);
+
+	if (doc.lv < 20) {
+		const limit = EXP_LIMITS[doc.lv - 1];
+		if (doc.exp >= limit) doc.lv++;
+	}
+
+	return doc.save();
 };

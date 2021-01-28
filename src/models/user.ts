@@ -5,6 +5,7 @@ export interface IUser extends Document {
 	gold: number;
 	hp: number;
 	lv: number;
+	exp: number;
 	items: Map<string, number>;
 }
 
@@ -13,6 +14,7 @@ const UserSchema = new Schema({
 	gold: { type: Number, required: true, min: 0, default: 0 },
 	hp: { type: Number, required: true, min: 0 },
 	lv: { type: Number, required: true, min: 1, max: 20, default: 1 },
+	exp: { type: Number, required: true, min: 0, default: 0 },
 	items: { type: Map, of: Number, required: true, default: {} },
 });
 

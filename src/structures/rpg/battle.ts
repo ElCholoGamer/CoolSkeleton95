@@ -139,12 +139,24 @@ class Battle {
 		// Monster dies
 		if (this.monster.hp <= 0) {
 			const gold = await this.monster.getGold(false, this);
+			const exp = await this.monster.getXP(this);
+
 			await this.player.user.addGold(gold);
+
+			const prevLv = doc.lv;
+			const newLv = (await this.player.user.addExp(exp)).lv;
+
 			await this.monster.onDeath(this);
 
-			return await this.end(
-				['YOU WON!', `You earned ${gold} gold.`].join('\n')
-			);
+			await this.end(['YOU WON!', `You earned ${gold} gold.`].join('\n'));
+
+			if (newLv > prevLv) {
+				await this.channel.send(
+					this.dialogGenerator.embedDialog('Your LOVE increased.')
+				);
+			}
+
+			return;
 		}
 
 		// Send attack dialog
