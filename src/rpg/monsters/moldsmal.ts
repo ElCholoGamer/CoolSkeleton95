@@ -17,7 +17,7 @@ class Moldsmal extends Monster {
 
 	public getAttack = () => 5;
 	public getDefense = () => 0;
-	public getXP = () => 3;
+	public getEXP = () => 3;
 	public getGold = (spared: boolean) => (!spared ? 3 : this.acted ? 1 : 0);
 
 	public getAttackQuote() {

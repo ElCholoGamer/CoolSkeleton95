@@ -16,7 +16,7 @@ class Froggit extends Monster {
 
 	public getAttack = () => 4;
 	public getDefense = () => 5;
-	public getXP = () => 3;
+	public getEXP = () => 3;
 	public getGold = () => 2;
 
 	public getAttackQuote() {

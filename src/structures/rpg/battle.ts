@@ -139,7 +139,7 @@ class Battle {
 		// Monster dies
 		if (this.monster.hp <= 0) {
 			const gold = await this.monster.getGold(false, this);
-			const exp = await this.monster.getXP(this);
+			const exp = await this.monster.getEXP(this);
 
 			await this.player.user.addGold(gold);
 

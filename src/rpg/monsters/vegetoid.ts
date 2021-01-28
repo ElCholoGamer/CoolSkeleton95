@@ -16,7 +16,7 @@ class Vegetoid extends Monster {
 
 	public getAttack = () => 5;
 	public getDefense = (check: boolean) => (check ? 6 : 0);
-	public getXP = () => 6;
+	public getEXP = () => 6;
 	public getGold = (spared: boolean) => (spared ? 4 : 1);
 
 	public getAttackQuote() {

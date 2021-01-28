@@ -16,7 +16,7 @@ class Loox extends Monster {
 
 	public getAttack = (check: boolean) => (check ? 5 : 5 + this.timesPickedOn);
 	public getDefense = () => 4;
-	public getXP = () => 7 + 5 * Math.min(this.timesPickedOn, 3);
+	public getEXP = () => 7 + 5 * Math.min(this.timesPickedOn, 3);
 	public getGold = () => 5;
 
 	public getFlavorText(battle: Battle) {

@@ -18,7 +18,7 @@ class Whimsun extends Monster {
 
 	public getAttack = (check: boolean) => (check ? 5 : 0);
 	public getDefense = () => 0;
-	public getXP = () => 2;
+	public getEXP = () => 2;
 	public getGold(spared: boolean) {
 		if ((!spared && !this.consoled) || this.terrorized) return 2;
 		return 0;

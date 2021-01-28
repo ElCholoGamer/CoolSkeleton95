@@ -35,7 +35,7 @@ abstract class Monster {
 
 	public abstract getAttack(check: boolean, battle: Battle): Awaitable<number>;
 	public abstract getDefense(check: boolean, battle: Battle): Awaitable<number>;
-	public abstract getXP(battle: Battle): Awaitable<number>;
+	public abstract getEXP(battle: Battle): Awaitable<number>;
 	public abstract getGold(spared: boolean, battle: Battle): Awaitable<number>;
 	public abstract getActOptions(battle: Battle): Awaitable<ActOption[]>;
 	public abstract getFlavorText(battle: Battle): Awaitable<string>;
