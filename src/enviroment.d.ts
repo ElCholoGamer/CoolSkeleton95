@@ -31,6 +31,10 @@ declare module 'discord.js' {
 		getDocument(): Promise<IGuild>;
 	}
 
+	interface TextChannel {
+		awaitingBattle: boolean;
+	}
+
 	interface User {
 		inBattle: boolean;
 		getDocument(): Promise<IUser>;

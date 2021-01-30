@@ -39,12 +39,11 @@ class MessageHandler extends EventHandler('message') {
 
 	public async execute({ author, content, guild, client }: Message) {
 		if (
-			!this.monsters.length ||
 			author.bot ||
+			author.inBattle ||
 			content.toLowerCase().startsWith(prefix.toLowerCase()) ||
 			!guild ||
-			Math.random() > battleChance ||
-			content !== '!fight'
+			Math.random() > battleChance
 		)
 			return;
 
@@ -52,7 +51,7 @@ class MessageHandler extends EventHandler('message') {
 		if (!rpgChannel) return;
 
 		const channel = await client.channels.fetch(rpgChannel);
-		if (!(channel instanceof TextChannel)) return;
+		if (!(channel instanceof TextChannel) || channel.awaitingBattle) return;
 
 		const MonsterConstructor = this.monsters.random();
 		const monster = new MonsterConstructor();
@@ -72,6 +71,7 @@ class MessageHandler extends EventHandler('message') {
 		}
 
 		const spawnMessage = await channel.send(embed);
+		channel.awaitingBattle = true;
 
 		const collected = await channel.awaitMessages(
 			(m: Message) =>
@@ -83,6 +83,8 @@ class MessageHandler extends EventHandler('message') {
 
 		const first = collected.first();
 		await spawnMessage.delete();
+
+		channel.awaitingBattle = false;
 
 		if (!first) return;
 
