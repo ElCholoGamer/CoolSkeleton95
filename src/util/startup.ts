@@ -6,10 +6,6 @@ import { BaseHandler } from '../structures/event-handler';
 import { readFullDir, removeExtension } from './utils';
 
 async function startup(client: Client) {
-	// Extensions
-	const extensionFiles = await readFullDir(join(__dirname, '../extensions'));
-	await Promise.all(extensionFiles.map(file => import(file)));
-
 	// Events
 	const eventFiles = (
 		await readFullDir(join(__dirname, '../events'))

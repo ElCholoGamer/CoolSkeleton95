@@ -4,6 +4,8 @@ import { existsSync } from 'fs';
 import startup from './util/startup';
 import db from './util/db';
 import Shop from './rpg/shop';
+import { join } from 'path';
+import { readFullDir } from './util/utils';
 
 const NODE_ENV = (process.env.NODE_ENV ||= process.argv.includes('-d')
 	? 'development'
@@ -16,6 +18,10 @@ const NODE_ENV = (process.env.NODE_ENV ||= process.argv.includes('-d')
 		const ascii = (await readFile('ascii.txt')).toString();
 		console.log(ascii);
 	}
+
+	// Extensions
+	const extensionFiles = await readFullDir(join(__dirname, 'extensions'));
+	await Promise.all(extensionFiles.map(file => import(file)));
 
 	console.log(`Running in ${NODE_ENV} mode`);
 
